@@ -10,7 +10,6 @@
 		274F131C1FACE0E50089A576 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 274F131B1FACE0E50089A576 /* main.c */; };
 		274F13241FACE3800089A576 /* softwaredisk.c in Sources */ = {isa = PBXBuildFile; fileRef = 274F13221FACE3800089A576 /* softwaredisk.c */; };
 		274F13271FACE3AC0089A576 /* filesystem.c in Sources */ = {isa = PBXBuildFile; fileRef = 274F13251FACE3AC0089A576 /* filesystem.c */; };
-		274F13291FACE3FE0089A576 /* exercisesoftwaredisk.c in Sources */ = {isa = PBXBuildFile; fileRef = 274F13281FACE3FE0089A576 /* exercisesoftwaredisk.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,7 +31,7 @@
 		274F13231FACE3800089A576 /* softwaredisk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = softwaredisk.h; sourceTree = "<group>"; };
 		274F13251FACE3AC0089A576 /* filesystem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = filesystem.c; sourceTree = "<group>"; };
 		274F13261FACE3AC0089A576 /* filesystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filesystem.h; sourceTree = "<group>"; };
-		274F13281FACE3FE0089A576 /* exercisesoftwaredisk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = exercisesoftwaredisk.c; sourceTree = "<group>"; };
+		274F132B1FACEF560089A576 /* diskTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = diskTest.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +69,7 @@
 				274F13231FACE3800089A576 /* softwaredisk.h */,
 				274F13251FACE3AC0089A576 /* filesystem.c */,
 				274F13261FACE3AC0089A576 /* filesystem.h */,
-				274F13281FACE3FE0089A576 /* exercisesoftwaredisk.c */,
+				274F132B1FACEF560089A576 /* diskTest.h */,
 			);
 			path = prog3;
 			sourceTree = "<group>";
@@ -133,7 +132,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				274F131C1FACE0E50089A576 /* main.c in Sources */,
-				274F13291FACE3FE0089A576 /* exercisesoftwaredisk.c in Sources */,
 				274F13271FACE3AC0089A576 /* filesystem.c in Sources */,
 				274F13241FACE3800089A576 /* softwaredisk.c in Sources */,
 			);
@@ -232,6 +230,7 @@
 		274F13201FACE0E50089A576 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				OTHER_LDFLAGS = "-v";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -239,6 +238,7 @@
 		274F13211FACE0E50089A576 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				OTHER_LDFLAGS = "-v";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

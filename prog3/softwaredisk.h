@@ -2,6 +2,8 @@
 // Software disk implementation for LSU 4103 filesystem assignment.
 // Written by Golden G. Richard III (@nolaforensix), 10/2017.
 //
+#ifndef softwaredisk_h
+#define softwaredisk_h
 
 #define SOFTWARE_DISK_BLOCK_SIZE 512
 
@@ -38,3 +40,5 @@ void sd_print_error(void);
 
 // software disk  error code set (set by each software disk function).
 extern SDError sderror;
+
+#endif /* filesystem_h */
