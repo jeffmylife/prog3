@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		274F131C1FACE0E50089A576 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 274F131B1FACE0E50089A576 /* main.c */; };
+		274F13241FACE3800089A576 /* softwaredisk.c in Sources */ = {isa = PBXBuildFile; fileRef = 274F13221FACE3800089A576 /* softwaredisk.c */; };
+		274F13271FACE3AC0089A576 /* filesystem.c in Sources */ = {isa = PBXBuildFile; fileRef = 274F13251FACE3AC0089A576 /* filesystem.c */; };
+		274F13291FACE3FE0089A576 /* exercisesoftwaredisk.c in Sources */ = {isa = PBXBuildFile; fileRef = 274F13281FACE3FE0089A576 /* exercisesoftwaredisk.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +28,11 @@
 /* Begin PBXFileReference section */
 		274F13181FACE0E50089A576 /* prog3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = prog3; sourceTree = BUILT_PRODUCTS_DIR; };
 		274F131B1FACE0E50089A576 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		274F13221FACE3800089A576 /* softwaredisk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = softwaredisk.c; sourceTree = "<group>"; };
+		274F13231FACE3800089A576 /* softwaredisk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = softwaredisk.h; sourceTree = "<group>"; };
+		274F13251FACE3AC0089A576 /* filesystem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = filesystem.c; sourceTree = "<group>"; };
+		274F13261FACE3AC0089A576 /* filesystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filesystem.h; sourceTree = "<group>"; };
+		274F13281FACE3FE0089A576 /* exercisesoftwaredisk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = exercisesoftwaredisk.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +66,11 @@
 			isa = PBXGroup;
 			children = (
 				274F131B1FACE0E50089A576 /* main.c */,
+				274F13221FACE3800089A576 /* softwaredisk.c */,
+				274F13231FACE3800089A576 /* softwaredisk.h */,
+				274F13251FACE3AC0089A576 /* filesystem.c */,
+				274F13261FACE3AC0089A576 /* filesystem.h */,
+				274F13281FACE3FE0089A576 /* exercisesoftwaredisk.c */,
 			);
 			path = prog3;
 			sourceTree = "<group>";
@@ -120,6 +133,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				274F131C1FACE0E50089A576 /* main.c in Sources */,
+				274F13291FACE3FE0089A576 /* exercisesoftwaredisk.c in Sources */,
+				274F13271FACE3AC0089A576 /* filesystem.c in Sources */,
+				274F13241FACE3800089A576 /* softwaredisk.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
