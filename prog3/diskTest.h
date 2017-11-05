@@ -18,10 +18,7 @@
 
 // Justin added to diskTest
 // justin created on branch
-<<<<<<< HEAD
-=======
-// Master check Mike Changed
->>>>>>> d5630a1cdf425d186ec3910115b8be1ce1edd411
+
 char poetry[]="Do not go gentle into that good night,"
 "Old age should burn and rave at close of day;"
 "Rage, rage against the dying of the light."
