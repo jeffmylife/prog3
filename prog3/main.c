@@ -14,5 +14,5 @@ int main(int argc, const char * argv[]) {
     printf("Hello, World!\n");
     diskTest();
     return 0;
-    //MIKE COMMENTED
+    //MIKE uncommented (no he didn't) what?
 }
