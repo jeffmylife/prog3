@@ -5,11 +5,6 @@
 //  Created by Michael Cole on 11/3/17.
 //  Copyright © 2017 Michael Cole. All rights reserved.
 //
-
-#ifndef diskTest_h
-#define diskTest_h
-
-#include "diskTest.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,7 +39,7 @@ char poetry[]="Do not go gentle into that good night,"
 "Do not go gentle into that good night."
 "Rage, rage against the dying of the light.";
 
-void diskTest() {
+int main() {
     char buf[SOFTWARE_DISK_BLOCK_SIZE];
     int i,j, ret;
     
@@ -100,7 +95,5 @@ void diskTest() {
         }
         printf("\n");
     }
+    return 0;
 }
-
-
-#endif /* diskTest_h */
