@@ -10,6 +10,9 @@
 #include "filesystem.h"
 #include <stdio.h>
 
+DirectoryEntry Directory[100];
+FATentry FAT[5000];
+
 // functions for filesystem API
 
 // open existing file with pathname 'name' and access mode 'mode'.  Current file

@@ -9,6 +9,20 @@
 #ifndef filesystem_h
 #define filesystem_h
 
+typedef struct DirectoryEntry{
+	char Filename[255];
+	int StartBlock;
+	int EndBlock;
+	int Size;	
+} DirectoryEntry;
+
+typedef struct FATentry{
+	int Next;
+	int Used;
+} FATentry;
+
+extern DirectoryEntry Directory[100];
+extern FATentry FAT[5000];
 
 // main private file type
 typedef struct FileInternals {
