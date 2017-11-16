@@ -44,7 +44,7 @@ int main() {
     //int i,j, ret;
     //init_software_disk();
     
-    unsigned long read, written, length,
+    unsigned long read, written, length;
     int delete, exists;
     //Full block of data size
     int fblock = 508;
@@ -55,12 +55,12 @@ int main() {
     char fdbuf[fblock];
     
     // Testing create_file function 
-    char file_name[] = "file1.txt"
+    char file_name[] = "file1.txt";
     testfile = create_file(file_name, READ_WRITE);
     fs_print_error();
 
     // Testing write_file function
-    memset(fdbuf, "Justin the Best!", fblock); 
+    memset(fdbuf, 'J', fblock); 
     written = write_file(testfile, fdbuf, fblock);
     fs_print_error();
     printf("%lu Bytes was written to %s\n", written, file_name);
@@ -74,17 +74,6 @@ int main() {
 
     
 
-    for (int i = 0; i < 100; i++){
-    	strcpy(Directory[i].Filename,"\0");
-    }
-
-    char test[] = "Does this work?";
-
-    strcpy(first[0].Filename,test);
-
-    for (int z = 0; z < 3; z++){
-    	printf("%s\n",first[z].Filename);
-    }
    /* printf("Size of software disk in blocks: %lu\n", software_disk_size());
     sd_print_error();
     printf("Writing a block of A's to block # 3.\n");
