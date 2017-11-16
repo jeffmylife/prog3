@@ -24,19 +24,23 @@ typedef struct FATentry{
 extern DirectoryEntry Directory[100];
 extern FATentry FAT[5000];
 
+// access mode for open_file() and create_file()
+typedef enum {
+    READ_ONLY, READ_WRITE
+    } FileMode;
+     
+
 // main private file type
 typedef struct FileInternals {
-    // private—you implement this
-    //not sure if struct
+	DirectoryEntry *Dir;
+	FATentry *FAT;
+	FileMode mode;
+	int currentPosition;
+	int currentBlock;
 } FileInternals;
 
 // file type used by user code
 typedef FileInternals* File;
-
-// access mode for open_file() and create_file()
-typedef enum {
-    READ_ONLY, READ_WRITE
-} FileMode;
 
 // error codes set in global 'fserror' by filesystem functions
 typedef enum  {

@@ -12,6 +12,8 @@
 
 DirectoryEntry Directory[100];
 FATentry FAT[5000];
+// filesystem error code set (set by each filesystem function)
+FSError fserror;
 
 // functions for filesystem API
 
@@ -135,6 +137,3 @@ void fs_print_error(void)
         default: puts("UNKNOWN ERROR");
     };
 };
-
-// filesystem error code set (set by each filesystem function)
-extern FSError fserror;
