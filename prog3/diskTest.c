@@ -10,7 +10,7 @@
 #include <string.h>
 #include <strings.h>
 #include "softwaredisk.h"
-
+#include "filesystem.h"
 // Justin added to diskTest
 // justin created on branch
 
@@ -40,8 +40,8 @@ char poetry[]="Do not go gentle into that good night,"
 "Rage, rage against the dying of the light.";
 
 int main() {
-    char buf[SOFTWARE_DISK_BLOCK_SIZE];
-    int i,j, ret;
+    //char buf[SOFTWARE_DISK_BLOCK_SIZE];
+    //int i,j, ret;
     
     /*unsigned long read, write, length,
     int delete;
@@ -59,16 +59,19 @@ int main() {
     write_file(testfile, fbuf, fblock);
     */
 
-    DirectoryEntry first;
+    DirectoryEntry first[100];
+    for (int i = 0; i < 100; i++){
+    	strcpy(first[i].Filename,"\0");
+    }
 
-    string ans = strcmp(first.Filename, NULL);
-    
-    if (ans == 0)
-	    printf("File name is null\n");
-    else 
-	    printf("Error\n");
-    
-    printf("Size of software disk in blocks: %lu\n", software_disk_size());
+    char test[] = "Does this work?";
+
+    strcpy(first[0].Filename,test);
+
+    for (int z = 0; z < 3; z++){
+    	printf("%s\n",first[z].Filename);
+    }
+   /* printf("Size of software disk in blocks: %lu\n", software_disk_size());
     sd_print_error();
     printf("Writing a block of A's to block # 3.\n");
     memset(buf, 'A', SOFTWARE_DISK_BLOCK_SIZE);
@@ -119,5 +122,6 @@ int main() {
         }
         printf("\n");
     }
+    */
     return 0;
 }
