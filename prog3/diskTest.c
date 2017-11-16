@@ -42,26 +42,40 @@ char poetry[]="Do not go gentle into that good night,"
 int main() {
     //char buf[SOFTWARE_DISK_BLOCK_SIZE];
     //int i,j, ret;
+    //init_software_disk();
     
-    /*unsigned long read, write, length,
-    int delete;
+    unsigned long read, written, length,
+    int delete, exists;
+    //Full block of data size
     int fblock = 508;
+    // File object
     File testfile;
     
+    //Full Data buffer 
     char fdbuf[fblock];
     
-    init_software_disk();
-    
-    testfile = create_file(file1.txt, READ_WRITE);
-    sd_print_error();
+    // Testing create_file function 
+    char file_name[] = "file1.txt"
+    testfile = create_file(file_name, READ_WRITE);
+    fs_print_error();
 
+    // Testing write_file function
     memset(fdbuf, "Justin the Best!", fblock); 
-    write_file(testfile, fbuf, fblock);
-    */
+    written = write_file(testfile, fdbuf, fblock);
+    fs_print_error();
+    printf("%lu Bytes was written to %s\n", written, file_name);
 
-    DirectoryEntry first[100];
+    // Testing close_file
+    close_file(testfile);
+    fs_print_error();
+
+    // Testing file_exists
+    exists = file_exists(file_name);
+
+    
+
     for (int i = 0; i < 100; i++){
-    	strcpy(first[i].Filename,"\0");
+    	strcpy(Directory[i].Filename,"\0");
     }
 
     char test[] = "Does this work?";
