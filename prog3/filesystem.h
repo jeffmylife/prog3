@@ -1,4 +1,4 @@
-//
+/
 //  filesystem.h
 //  prog3
 //
@@ -13,7 +13,8 @@ typedef struct DirectoryEntry{
 	char Filename[255];
 	int StartBlock;
 	int EndBlock;
-	int Size;	
+	int Size;
+	int Used;	
 } DirectoryEntry;
 
 typedef struct FATentry{
