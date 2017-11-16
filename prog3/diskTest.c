@@ -43,7 +43,31 @@ int main() {
     char buf[SOFTWARE_DISK_BLOCK_SIZE];
     int i,j, ret;
     
+    /*unsigned long read, write, length,
+    int delete;
+    int fblock = 508;
+    File testfile;
+    
+    char fdbuf[fblock];
+    
     init_software_disk();
+    
+    testfile = create_file(file1.txt, READ_WRITE);
+    sd_print_error();
+
+    memset(fdbuf, "Justin the Best!", fblock); 
+    write_file(testfile, fbuf, fblock);
+    */
+
+    DirectoryEntry first;
+
+    string ans = strcmp(first.Filename, NULL);
+    
+    if (ans == 0)
+	    printf("File name is null\n");
+    else 
+	    printf("Error\n");
+    
     printf("Size of software disk in blocks: %lu\n", software_disk_size());
     sd_print_error();
     printf("Writing a block of A's to block # 3.\n");
