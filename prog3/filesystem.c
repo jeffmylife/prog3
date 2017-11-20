@@ -11,7 +11,6 @@
 #include <stdio.h>
 
 DirectoryEntry Directory[100];
-FATentry FAT[5000];
 // filesystem error code set (set by each filesystem function)
 FSError fserror;
 

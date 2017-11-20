@@ -13,7 +13,8 @@ typedef struct DirectoryEntry{
 	int StartBlock;
 	int EndBlock;
 	int Size;
-	int Used;	
+	int Used;
+	char emptySpace[257-4*sizeof(int)];	
 } DirectoryEntry;
 
 typedef struct FATentry{
@@ -22,7 +23,6 @@ typedef struct FATentry{
 } FATentry;
 
 extern DirectoryEntry Directory[100];
-extern FATentry FAT[5000];
 
 // access mode for open_file() and create_file()
 typedef enum {
