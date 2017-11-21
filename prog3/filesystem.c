@@ -12,6 +12,7 @@
 #include <string.h>
 DirectoryEntry Directory[100];
 DirectoryEntry dirBuf;
+FATentry FATBuf;
 // filesystem error code set (set by each filesystem function)
 FSError fserror;
 
@@ -55,7 +56,57 @@ File create_file(char *name, FileMode mode)
 	}
 	if (fserror != 1)
 	{
-		
+	// Looping blocks in FAT  
+	for (int j = 100; j < 103; j++)
+	    {
+	      if (j!= 102)
+		{
+		  // Looping FAT Entries in this block
+		  for (int z = 0; z < FATEntriesPerBlock; z++)
+		    {
+			bzero(&FATBuf,SOFTWARE_DISK_BLOCK_SIZE);
+			int ret = read_sd_block(&FATBuf,(unsigned long)z);
+			if (FATBuf.Used == 0)
+			{
+				FATBuf.Used = 1;
+				fileToCreate->FATblock = j;
+				fileToCreate->FATblockPosition = z;
+				fileToCreate->currentBlock = (100 + (64*(101-j)) + z);
+				dirBuf.StartBlock = (100 + (64*(101-j)) + z);
+				dirBuf.Used = 1;
+				break;
+			}
+		      	
+		    }
+		}
+	      else if (dirBuf.Used != 1)
+		{
+		  // Looping last 36 FAT Entries in Block 102
+		  for (int z = 0; z < FATEntriesPerBlock - 28; z++)
+		    {
+			
+			bzero(&FATBuf,SOFTWARE_DISK_BLOCK_SIZE);
+			int ret = read_sd_block(&FATBuf,(unsigned long)z);
+			if (FATBuf.Used == 0)
+			{
+				FATBuf.Used = 1;
+				fileToCreate->FATblock = j;
+				fileToCreate->FATblockPosition = z;
+				fileToCreate->currentBlock = (100 + (64*(101-j)) + z);
+				dirBuf.StartBlock = (100 + (64*(101-j)) + z);
+				dirBuf.Used = 1;
+				break;
+			}
+
+			if (z == FATEntriesPerBlock - 27)
+				fserror = 1;
+		    }
+		}
+	      
+	      //int ret = write_sd_block(&FATBuf,j);
+	      //              printf("Return value was %d for block %i \n\n", ret,j);
+	    }
+	  
 	}
     //TODO: handle error, set current file position to 0
     open_file(name,mode);
