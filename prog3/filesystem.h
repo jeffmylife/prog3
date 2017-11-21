@@ -32,8 +32,9 @@ typedef enum {
 
 // main private file type
 typedef struct FileInternals {
-	DirectoryEntry *Dir;
-	FATentry *FAT;
+	int Dir;
+	int FATblock;
+	int FATblockPosition;
 	FileMode mode;
 	int currentPosition;
 	int currentBlock;

@@ -6,11 +6,12 @@
 //  Copyright © 2017 Michael Cole. All rights reserved.
 //  Copyright © 2017 Justin Guillory. All rights reserved.
 //
-
+#include "softwaredisk.h"
 #include "filesystem.h"
 #include <stdio.h>
-
+#include <string.h>
 DirectoryEntry Directory[100];
+DirectoryEntry dirBuf;
 // filesystem error code set (set by each filesystem function)
 FSError fserror;
 
@@ -29,9 +30,33 @@ File open_file(char *name, FileMode mode)
 // position is set at byte 0.  Returns NULL on error. Always sets 'fserror' global.
 File create_file(char *name, FileMode mode)
 {
+	fserror = 0;
     //TODO: if error, fileToCreate = NULL
     //
     File fileToCreate; //may need to malloc, may need constructor
+    fileToCreate->mode = mode;
+    fileToCreate->currentPosition = 0;
+	
+    //scan directory for first available entry
+	for (int i = 0;i < 100; i++)
+	{
+		bzero(&dirBuf,SOFTWARE_DISK_BLOCK_SIZE);
+		int ret = read_sd_block(&dirBuf,(unsigned long)i);
+		if (dirBuf.Used == 0)
+		{
+			strcpy(dirBuf.Filename,name);
+			fileToCreate->Dir = i;
+		       	break;	
+		}
+                if (i=99)
+		{
+			fserror = 1;	
+		}	
+	}
+	if (fserror != 1)
+	{
+		
+	}
     //TODO: handle error, set current file position to 0
     open_file(name,mode);
     
