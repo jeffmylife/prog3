@@ -21,20 +21,52 @@ int main(){
 		Directory[i].Used = -1;
 		strcpy(Directory[i].emptySpace,"\0");
 		int ret = write_sd_block(&Directory[i],i);
-		printf("Return value was %d.\n", ret);
+//		printf("Return value was %d.\n", ret);
 	}
-	for (int j = 100; j < 164; j++)
+	for (int j = 100; j < 103; j++)
 	{
-		for (int z = 0; z < FATEntriesPerBlock; z++)
-		{	
-			FATBuf[z].Next = -1;
-			FATBuf[z].Used = -1;	
+		if (j!= 102)
+		{
+			for (int z = 0; z < FATEntriesPerBlock; z++)
+			{	
+				FATBuf[z].Next = -1;
+				FATBuf[z].Used = 1;	
+			}
+		}
+		else
+		{
+			for (int z = 0; z < FATEntriesPerBlock - 28; z++)
+			{	
+				FATBuf[z].Next = -1;
+				FATBuf[z].Used = 1;	
+			}
 		}
 		int ret = write_sd_block(&FATBuf,j);
-		printf("Return value was %d for block %i \n\n", ret,j);
+//		printf("Return value was %d for block %i \n\n", ret,j);
+	}
+	for (int j = 102; j < 164; j++)
+	{
+		if (j!= 102)
+		{
+			for (int z = 0; z < FATEntriesPerBlock; z++)
+			{	
+				FATBuf[z].Next = -1;
+				FATBuf[z].Used = 0;	
+			}
+		}
+		else
+		{
+			for (int z = 36; z < FATEntriesPerBlock; z++)
+			{	
+				FATBuf[z].Next = -1;
+				FATBuf[z].Used = 0;	
+			}
+		}
+		int ret = write_sd_block(&FATBuf,j);
+//		printf("Return value was %d for block %i \n\n", ret,j);
 	}
 
-	printf("Reading directory\n");
+/*	printf("Reading directory\n");
 	for (int k = 0; k < 100; k++)
 	{
 		bzero(&dirBuf,SOFTWARE_DISK_BLOCK_SIZE);
@@ -50,7 +82,7 @@ int main(){
 	}
 
 	printf("Reading FAT\n");
-	for (int k = 100; k < 164; k++)
+	for (int k = 100; k < 105; k++)
 	{
 		bzero(&FATBuf,SOFTWARE_DISK_BLOCK_SIZE);
 		int ret2 = read_sd_block(&FATBuf,(unsigned long)k);
@@ -63,6 +95,6 @@ int main(){
 			FATBuf[z].Used);
 		}
 	}
-	
+*/	
 	return 0;
 }
