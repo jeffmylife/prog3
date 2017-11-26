@@ -113,7 +113,6 @@ File create_file(char *name, FileMode mode)
     
     return fileToCreate;
 };
-
 // close 'file'.  Always sets 'fserror' global.
 void close_file(File file)
 {
