@@ -10,9 +10,11 @@
 #include "filesystem.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 DirectoryEntry Directory[100];
 DirectoryEntry dirBuf;
 FATentry FATBuf;
+int FATEntriesPerBlock = 512/sizeof(FATentry);
 // filesystem error code set (set by each filesystem function)
 FSError fserror;
 
@@ -31,26 +33,51 @@ File open_file(char *name, FileMode mode)
 // position is set at byte 0.  Returns NULL on error. Always sets 'fserror' global.
 File create_file(char *name, FileMode mode)
 {
-	fserror = 0;
+    fserror = 0;
     //TODO: if error, fileToCreate = NULL
     //
+    
     File fileToCreate; //may need to malloc, may need constructor
+    fileToCreate = (File)malloc(sizeof(FileInternals));
     fileToCreate->mode = mode;
     fileToCreate->currentPosition = 0;
-	
+    printf("current position = %i\n",fileToCreate->currentPosition);	
     //scan directory for first available entry
 	for (int i = 0;i < 100; i++)
 	{
 		bzero(&dirBuf,SOFTWARE_DISK_BLOCK_SIZE);
 		int ret = read_sd_block(&dirBuf,(unsigned long)i);
+		
+		printf("Directory entry %i : read returned %i\n",i,ret);
+		printf("Directory entry: %s\n %i\n %i\n %i\n %i\n %s\n",
+		dirBuf.Filename,
+		dirBuf.StartBlock,
+		dirBuf.EndBlock,
+		dirBuf.Size,
+		dirBuf.Used,
+		dirBuf.emptySpace);
+		
 		if (dirBuf.Used == 0)
 		{
 			strcpy(dirBuf.Filename,name);
 			fileToCreate->Dir = i;
+			dirBuf.Used = 1;
+			printf("Found spot in directory\n");
+				
+			printf("Directory entry %i : read returned %i\n",i,ret);
+			printf("Directory entry: %s\n %i\n %i\n %i\n %i\n %s\n",
+			dirBuf.Filename,
+			dirBuf.StartBlock,
+			dirBuf.EndBlock,
+			dirBuf.Size,
+			dirBuf.Used,
+			dirBuf.emptySpace);
 		       	break;	
+
 		}
-                if (i=99)
+                if (i==99)
 		{
+    			printf("Didn't find spot in directory\n");	
 			fserror = 1;	
 		}	
 	}
@@ -61,7 +88,7 @@ File create_file(char *name, FileMode mode)
 	    {
 	      if (j!= 102)
 		{
-		  // Looping FAT Entries in this block
+		  // Looping FAT Entries in 2 blocks
 		  for (int z = 0; z < FATEntriesPerBlock; z++)
 		    {
 			bzero(&FATBuf,SOFTWARE_DISK_BLOCK_SIZE);
@@ -74,6 +101,7 @@ File create_file(char *name, FileMode mode)
 				fileToCreate->currentBlock = (100 + (64*(101-j)) + z);
 				dirBuf.StartBlock = (100 + (64*(101-j)) + z);
 				dirBuf.Used = 1;
+				printf("New file located at block %i and FATEntry %i\n", j,z);
 				break;
 			}
 		      	
@@ -103,13 +131,17 @@ File create_file(char *name, FileMode mode)
 		    }
 		}
 	      
-	      //int ret = write_sd_block(&FATBuf,j);
-	      //              printf("Return value was %d for block %i \n\n", ret,j);
+	      int ret = write_sd_block(&FATBuf,j);
+	      printf("Return value was %d for block %i \n\n", ret,j);
+
+	      if (dirBuf.Used == 1)
+			  break;
 	    }
 	  
 	}
     //TODO: handle error, set current file position to 0
-    open_file(name,mode);
+//    if (fserror != 1)
+//	    open_file(name,mode);
     
     return fileToCreate;
 };
@@ -196,18 +228,25 @@ void fs_print_error(void)
     switch(fserror){
         case FS_NONE:
             puts("NONE");
+	    break;
         case FS_OUT_OF_SPACE:
             puts("OUT_OF_SPACE");
+	    break;
         case FS_FILE_NOT_OPEN:
             puts("FILE_NOT_OPEN");
+	    break;
         case FS_FILE_OPEN:
             puts("FILE_OPEN");
+	    break;
         case FS_FILE_NOT_FOUND:
             puts("FILE_NOT_FOUND");
+	    break;
         case FS_FILE_READ_ONLY:
             puts("FILE_READ_ONLY");
+	    break;
         case FS_FILE_ALREADY_EXISTS:
             puts("FILE_ALREADY_EXISTS");
+	    break;
         default: puts("UNKNOWN ERROR");
-    };
+    }
 };

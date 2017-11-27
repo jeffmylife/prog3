@@ -18,7 +18,7 @@ int main(){
 		Directory[i].StartBlock = -1;
 		Directory[i].EndBlock = -1;
 		Directory[i].Size = -1;
-		Directory[i].Used = -1;
+		Directory[i].Used = 0;
 		strcpy(Directory[i].emptySpace,"\0");
 		int ret = write_sd_block(&Directory[i],i);
 //		printf("Return value was %d.\n", ret);
@@ -65,8 +65,8 @@ int main(){
 		int ret = write_sd_block(&FATBuf,j);
 //		printf("Return value was %d for block %i \n\n", ret,j);
 	}
-
-/*	printf("Reading directory\n");
+/*
+	printf("Reading directory\n");
 	for (int k = 0; k < 100; k++)
 	{
 		bzero(&dirBuf,SOFTWARE_DISK_BLOCK_SIZE);

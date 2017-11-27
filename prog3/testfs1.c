@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
   File f;
   char buf[1000];
 
-  // should fail, file doesn't exist
+/*  // should fail, file doesn't exist
   printf("ret from delete_file(\"blarg\") = %d\n",
 	 delete_file("blarg"));
   fs_print_error();
@@ -20,13 +20,13 @@ int main(int argc, char *argv[]) {
   printf("ret from open_file(\"blarg\", READ_ONLY) = %p\n",
 	 open_file("blarg", READ_ONLY));
   fs_print_error();
-
+*/
   // should succeed
   f=create_file("blarg", READ_ONLY);
   printf("ret from create_file(\"blarg\", READ_ONLY) = %p\n",
 	 f);
   fs_print_error();
-
+/*
   // should succeed
   close_file(f);
   printf("Executed close_file(f).\n");
@@ -89,6 +89,7 @@ int main(int argc, char *argv[]) {
   close_file(f);
   printf("Executed close_file(f).\n");
   fs_print_error();
+*/
 }
   
   
