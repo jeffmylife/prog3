@@ -43,22 +43,10 @@ File create_file(char *name, FileMode mode)
     fileToCreate->currentPosition = 0;
     printf("current position = %i\n",fileToCreate->currentPosition);	
     
-
-    //scan directory to see if name already exists in directory
-    for (int i = 0; i < 100; i++)
-    {
-	
-	bzero(&dirBuf,SOFTWARE_DISK_BLOCK_SIZE);
-	int ret = read_sd_block(&dirBuf,(unsigned long)i);
-	if (!strcmp(dirBuf.Filename,name))
-	{
-		fserror = 6;
-		break;
-
-	}
-
-
-    }
+    // Scan directory to see if file exists already or not
+    if(file_exists(name))
+	    fserror == 6;
+    
     
     //scan directory for first available entry
     if (fserror == 0)
@@ -244,11 +232,28 @@ int delete_file(char *name)
 // Always sets 'fserror' global.
 int file_exists(char *name)
 {
+    fserror = 0;
     int exists = 0;
+
+    //scan directory to see if name already exists in directory
+    for (int i = 0; i < 100; i++)
+    {
+	
+	bzero(&dirBuf,SOFTWARE_DISK_BLOCK_SIZE);
+	int ret = read_sd_block(&dirBuf,(unsigned long)i);
+	if (!strcmp(dirBuf.Filename,name))
+	{
+		fserror = 6;
+		exists = 1;
+		break;
+
+	}
+
+    }
+
+
     //TODO: check if the file exists
-    if (exists == 0)
-        fserror = FS_NONE;
-    else fserror = FS_FILE_ALREADY_EXISTS;
+
     return exists;
 };
 

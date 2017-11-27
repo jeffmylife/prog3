@@ -1,10 +1,26 @@
-#include "filesystem.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
 #include "softwaredisk.h"
+
+
+typedef struct DirectoryEntry{
+	char Filename[255];
+	int StartBlock;
+	int EndBlock;
+	int Size;
+	int Used;
+	char emptySpace[257-4*sizeof(int)];	
+} DirectoryEntry;
+
+typedef struct FATentry{
+	int Next;
+	int Used;
+} FATentry;
+
+DirectoryEntry Directory[100];
 
 int main(){
         DirectoryEntry dirBuf;
