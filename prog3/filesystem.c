@@ -42,7 +42,27 @@ File create_file(char *name, FileMode mode)
     fileToCreate->mode = mode;
     fileToCreate->currentPosition = 0;
     printf("current position = %i\n",fileToCreate->currentPosition);	
+    
+
+    //scan directory to see if name already exists in directory
+    for (int i = 0; i < 100; i++)
+    {
+	
+	bzero(&dirBuf,SOFTWARE_DISK_BLOCK_SIZE);
+	int ret = read_sd_block(&dirBuf,(unsigned long)i);
+	if (!strcmp(dirBuf.Filename,name))
+	{
+		fserror = 6;
+		break;
+
+	}
+
+
+    }
+    
     //scan directory for first available entry
+    if (fserror == 0)
+    {
 	for (int i = 0;i < 100; i++)
 	{
 		bzero(&dirBuf,SOFTWARE_DISK_BLOCK_SIZE);
@@ -81,7 +101,8 @@ File create_file(char *name, FileMode mode)
 			fserror = 1;	
 		}	
 	}
-	if (fserror != 1)
+    }
+	if (fserror == 0)
 	{
 	// Looping blocks in FAT  
 	for (int j = 100; j < 103; j++)
@@ -101,6 +122,12 @@ File create_file(char *name, FileMode mode)
 				fileToCreate->currentBlock = (100 + (64*(101-j)) + z);
 				dirBuf.StartBlock = (100 + (64*(101-j)) + z);
 				dirBuf.Used = 1;
+
+	      			int ret1 = write_sd_block(&dirBuf,fileToCreate->Dir);
+	      			printf("Return value was %d for Directory block %i \n\n", ret1,fileToCreate->Dir);
+
+	      			int ret2 = write_sd_block(&FATBuf,fileToCreate->FATblock);
+	      			printf("Return value was %d for FAT entry at block %i and position %i\n", ret2,fileToCreate->FATblock,fileToCreate->FATblockPosition);
 				printf("New file located at block %i and FATEntry %i\n", j,z);
 				break;
 			}
@@ -123,6 +150,13 @@ File create_file(char *name, FileMode mode)
 				fileToCreate->currentBlock = (100 + (64*(101-j)) + z);
 				dirBuf.StartBlock = (100 + (64*(101-j)) + z);
 				dirBuf.Used = 1;
+
+	      			int ret1 = write_sd_block(&dirBuf,fileToCreate->Dir);
+	      			printf("Return value was %d for Directory block %i \n\n", ret1,fileToCreate->Dir);
+
+	      			int ret2 = write_sd_block(&FATBuf,fileToCreate->FATblock);
+	      			printf("Return value was %d for FAT entry at block %i and position %i\n", ret2,fileToCreate->FATblock,fileToCreate->FATblockPosition);
+				printf("New file located at block %i and FATEntry %i\n", j,z);
 				break;
 			}
 
@@ -131,16 +165,14 @@ File create_file(char *name, FileMode mode)
 		    }
 		}
 	      
-	      int ret = write_sd_block(&FATBuf,j);
-	      printf("Return value was %d for block %i \n\n", ret,j);
 
-	      if (dirBuf.Used == 1)
+	      if (FATBuf.Used == 1)
 			  break;
 	    }
 	  
 	}
     //TODO: handle error, set current file position to 0
-//    if (fserror != 1)
+//    if (fserror == 0)
 //	    open_file(name,mode);
     
     return fileToCreate;
