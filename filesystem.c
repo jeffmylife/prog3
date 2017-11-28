@@ -64,7 +64,7 @@ File create_file(char *name, FileMode mode)
     fileToCreate = malloc(sizeof(FileInternals));
     fileToCreate->mode = mode;
     fileToCreate->currentPosition = 0;
-    printf("current position = %i\n",fileToCreate->currentPosition);	
+    //printf("current position = %i\n",fileToCreate->currentPosition);	
     
     // Scan directory to see if file exists already or not
     if(file_exists(name)==1)
@@ -77,37 +77,18 @@ File create_file(char *name, FileMode mode)
 	{
 		bzero(&dirBuf,SOFTWARE_DISK_BLOCK_SIZE);
 		int ret = read_sd_block(&dirBuf,(unsigned long)i);
-		
-		printf("Directory entry %i : read returned %i\n",i,ret);
-		printf("Directory entry: %s\n %i\n %i\n %i\n %i\n %s\n",
-		dirBuf.Filename,
-		dirBuf.StartBlock,
-		dirBuf.EndBlock,
-		dirBuf.Size,
-		dirBuf.Used,
-		dirBuf.emptySpace);
-		
+			
 		if (dirBuf.Used == 0)
 		{
 			strcpy(dirBuf.Filename,name);
 			fileToCreate->Dir = i;
 			dirBuf.Used = 1;
-			printf("Found spot in directory\n");
-				
-			printf("Directory entry %i : read returned %i\n",i,ret);
-			printf("Directory entry: %s\n %i\n %i\n %i\n %i\n %s\n",
-			dirBuf.Filename,
-			dirBuf.StartBlock,
-			dirBuf.EndBlock,
-			dirBuf.Size,
-			dirBuf.Used,
-			dirBuf.emptySpace);
 		       	break;	
 
 		}
                 if (i==99)
 		{
-    			printf("Didn't find spot in directory\n");	
+    			//printf("Didn't find spot in directory\n");	
 			fserror = 1;	
 		}	
 	}
@@ -131,7 +112,6 @@ File create_file(char *name, FileMode mode)
 			if (FATBuf.Used == 0)
 			{
 					
-				printf("Made it here 8\n");
 				FATBuf.Used = 1;
 				fileToCreate->FATblock = j;
 				fileToCreate->FATblockPosition = z;
@@ -142,11 +122,11 @@ File create_file(char *name, FileMode mode)
 				//dirBuf.fileRef = fileToCreate;
 
 	      			int ret1 = write_sd_block(&dirBuf,fileToCreate->Dir);
-	      			printf("Return value was %d for Directory block %i \n\n", ret1,fileToCreate->Dir);
+	      			//printf("Return value was %d for Directory block %i \n\n", ret1,fileToCreate->Dir);
 
 	      			int ret2 = write_sd_block(&FATBuf,fileToCreate->FATblock);
-	      			printf("Return value was %d for FAT entry at block %i and position %i\n", ret2,fileToCreate->FATblock,fileToCreate->FATblockPosition);
-				printf("New file located at block %i and FATEntry %i\n", j,z);
+	      			//printf("Return value was %d for FAT entry at block %i and position %i\n", ret2,fileToCreate->FATblock,fileToCreate->FATblockPosition);
+				//printf("New file located at block %i and FATEntry %i\n", j,z);
 				break;
 			}
 		    }
@@ -169,11 +149,11 @@ File create_file(char *name, FileMode mode)
 				//dirBuf.fileRef = fileToCreate;
 	      			
 				int ret1 = write_sd_block(&dirBuf,fileToCreate->Dir);
-	      			printf("Return value was %d for Directory block %i \n\n", ret1,fileToCreate->Dir);
+	      			//printf("Return value was %d for Directory block %i \n\n", ret1,fileToCreate->Dir);
 
 	      			int ret2 = write_sd_block(&FATBuf,fileToCreate->FATblock);
-	      			printf("Return value was %d for FAT entry at block %i and position %i\n", ret2,fileToCreate->FATblock,fileToCreate->FATblockPosition);
-				printf("New file located at block %i and FATEntry %i\n", j,z);
+	      			//printf("Return value was %d for FAT entry at block %i and position %i\n", ret2,fileToCreate->FATblock,fileToCreate->FATblockPosition);
+				//printf("New file located at block %i and FATEntry %i\n", j,z);
 				break;
 			}
 
@@ -294,7 +274,7 @@ int file_exists(char *name)
 // error.
 void fs_print_error(void)
 {
-    printf("FS ERROR: ");
+    //printf("FS ERROR: ");
     switch(fserror){
         case FS_NONE:
             puts("NONE");
