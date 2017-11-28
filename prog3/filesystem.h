@@ -34,7 +34,7 @@ typedef struct DirectoryEntry{
 	int Used;
 	int isOpen;
 	//File fileRef;
-	char emptySpace[257-5*sizeof(int)/*-sizeof(File)*/];	
+	char emptySpace[257-5*sizeof(int)/*sizeof(File)*/];	
 } DirectoryEntry;
 
 typedef struct FATentry{

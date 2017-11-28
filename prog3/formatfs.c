@@ -56,7 +56,7 @@ int main(){
 		Directory[i].Size = -1;
 		Directory[i].Used = 0;
 		Directory[i].isOpen = 0;
-		//Directory[i].fileRef = (File)malloc(sizeof(FileInternals));
+		//Directory[i].fileRef = (File)-1;
 		strcpy(Directory[i].emptySpace,"\0");
 		int ret = write_sd_block(&Directory[i],i);
 //		printf("Return value was %d.\n", ret);

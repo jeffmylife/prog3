@@ -61,7 +61,7 @@ File create_file(char *name, FileMode mode)
     //
     
     File fileToCreate; //may need to malloc, may need constructor
-    fileToCreate = (File)malloc(sizeof(FileInternals));
+    fileToCreate = malloc(sizeof(FileInternals));
     fileToCreate->mode = mode;
     fileToCreate->currentPosition = 0;
     printf("current position = %i\n",fileToCreate->currentPosition);	
@@ -126,11 +126,8 @@ File create_file(char *name, FileMode mode)
 		  for (int z = 0; z < FATEntriesPerBlock; z++)
 		    {
 			
-			printf("Made it here 6\n");
 			bzero(&FATBuf,2*sizeof(int));
-			printf("Made it here 7\n");
 			int ret = read_sd_block(&FATBuf,(unsigned long)z);
-			printf("Made it here Nice\n");
 			if (FATBuf.Used == 0)
 			{
 					
@@ -142,8 +139,7 @@ File create_file(char *name, FileMode mode)
 				dirBuf.StartBlock = (100 + (64*(101-j)) + z);
 				dirBuf.Used = 1;
 				
-				printf("Made it here 9\n");
-				//dirBuf.fileRef = *fileToCreate;
+				//dirBuf.fileRef = fileToCreate;
 
 	      			int ret1 = write_sd_block(&dirBuf,fileToCreate->Dir);
 	      			printf("Return value was %d for Directory block %i \n\n", ret1,fileToCreate->Dir);
@@ -160,7 +156,6 @@ File create_file(char *name, FileMode mode)
 		  // Looping last 36 FAT Entries in Block 102
 		  for (int z = 0; z < FATEntriesPerBlock - 28; z++)
 		    {
-		  	printf("Shouldn't make it here\n");	
 			bzero(&FATBuf,2*sizeof(int));
 			int ret = read_sd_block(&FATBuf,(unsigned long)z);
 			if (FATBuf.Used == 0)
@@ -171,9 +166,9 @@ File create_file(char *name, FileMode mode)
 				fileToCreate->currentBlock = (100 + (64*(101-j)) + z);
 				dirBuf.StartBlock = (100 + (64*(101-j)) + z);
 				dirBuf.Used = 1;
-				//dirBuf.fileRef = *fileToCreate;
-
-	      			int ret1 = write_sd_block(&dirBuf,fileToCreate->Dir);
+				//dirBuf.fileRef = fileToCreate;
+	      			
+				int ret1 = write_sd_block(&dirBuf,fileToCreate->Dir);
 	      			printf("Return value was %d for Directory block %i \n\n", ret1,fileToCreate->Dir);
 
 	      			int ret2 = write_sd_block(&FATBuf,fileToCreate->FATblock);
