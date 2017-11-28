@@ -26,6 +26,29 @@ File open_file(char *name, FileMode mode)
 {
     File fileToOpen;
     //TODO: use the name and mode to either open the file or deny permission
+    
+     
+    
+    bzero(&dirBuf,SOFTWARE_DISK_BLOCK_SIZE);
+    int ret = read_sd_block(&dirBuf,(unsigned long)fileToOpen->Dir);
+    // Scan directory to see if file exists already or not
+    if(ret)
+    {
+	if (dirBuf.isOpen)
+	{
+	    fserror = 3;
+	}
+	else 
+	{
+	    dirBuf.isOpen = 1;
+	    fserror = 0;
+	}
+    }
+	   
+    else 
+	 fserror = 4;
+    
+    
     return fileToOpen;
 };
 
@@ -44,9 +67,8 @@ File create_file(char *name, FileMode mode)
     printf("current position = %i\n",fileToCreate->currentPosition);	
     
     // Scan directory to see if file exists already or not
-    if(file_exists(name))
-	    fserror == 6;
-    
+    if(file_exists(name)==1)
+	    fserror = 6;
     
     //scan directory for first available entry
     if (fserror == 0)
@@ -90,8 +112,11 @@ File create_file(char *name, FileMode mode)
 		}	
 	}
     }
-	if (fserror == 0)
+
+    
+    if (fserror == 0)
 	{
+	
 	// Looping blocks in FAT  
 	for (int j = 100; j < 103; j++)
 	    {
@@ -100,16 +125,25 @@ File create_file(char *name, FileMode mode)
 		  // Looping FAT Entries in 2 blocks
 		  for (int z = 0; z < FATEntriesPerBlock; z++)
 		    {
-			bzero(&FATBuf,SOFTWARE_DISK_BLOCK_SIZE);
+			
+			printf("Made it here 6\n");
+			bzero(&FATBuf,2*sizeof(int));
+			printf("Made it here 7\n");
 			int ret = read_sd_block(&FATBuf,(unsigned long)z);
+			printf("Made it here Nice\n");
 			if (FATBuf.Used == 0)
 			{
+					
+				printf("Made it here 8\n");
 				FATBuf.Used = 1;
 				fileToCreate->FATblock = j;
 				fileToCreate->FATblockPosition = z;
 				fileToCreate->currentBlock = (100 + (64*(101-j)) + z);
 				dirBuf.StartBlock = (100 + (64*(101-j)) + z);
 				dirBuf.Used = 1;
+				
+				printf("Made it here 9\n");
+				//dirBuf.fileRef = *fileToCreate;
 
 	      			int ret1 = write_sd_block(&dirBuf,fileToCreate->Dir);
 	      			printf("Return value was %d for Directory block %i \n\n", ret1,fileToCreate->Dir);
@@ -119,16 +153,15 @@ File create_file(char *name, FileMode mode)
 				printf("New file located at block %i and FATEntry %i\n", j,z);
 				break;
 			}
-		      	
 		    }
 		}
-	      else if (dirBuf.Used != 1)
+	      else
 		{
 		  // Looping last 36 FAT Entries in Block 102
 		  for (int z = 0; z < FATEntriesPerBlock - 28; z++)
 		    {
-			
-			bzero(&FATBuf,SOFTWARE_DISK_BLOCK_SIZE);
+		  	printf("Shouldn't make it here\n");	
+			bzero(&FATBuf,2*sizeof(int));
 			int ret = read_sd_block(&FATBuf,(unsigned long)z);
 			if (FATBuf.Used == 0)
 			{
@@ -138,6 +171,7 @@ File create_file(char *name, FileMode mode)
 				fileToCreate->currentBlock = (100 + (64*(101-j)) + z);
 				dirBuf.StartBlock = (100 + (64*(101-j)) + z);
 				dirBuf.Used = 1;
+				//dirBuf.fileRef = *fileToCreate;
 
 	      			int ret1 = write_sd_block(&dirBuf,fileToCreate->Dir);
 	      			printf("Return value was %d for Directory block %i \n\n", ret1,fileToCreate->Dir);
@@ -161,7 +195,7 @@ File create_file(char *name, FileMode mode)
 	}
     //TODO: handle error, set current file position to 0
 //    if (fserror == 0)
-//	    open_file(name,mode);
+//	    open_file(name,mode);implementation of file system in c
     
     return fileToCreate;
 };
@@ -169,10 +203,17 @@ File create_file(char *name, FileMode mode)
 void close_file(File file)
 {
     //TODO: ???
-    
+     
+    bzero(&dirBuf,SOFTWARE_DISK_BLOCK_SIZE);
+    int ret = read_sd_block(&dirBuf,(unsigned long)file->Dir);
     // Scan directory to see if file exists already or not
-    //if(file_exists(name))
-	   
+    if(ret)
+    {
+	dirBuf.isOpen = 0; 
+	fserror = 0;
+    }
+    else 
+	 fserror = 4;
 };
 
 // read at most 'numbytes' of data from 'file' into 'buf', starting at the
@@ -236,25 +277,18 @@ int delete_file(char *name)
 // Always sets 'fserror' global.
 int file_exists(char *name)
 {
-    fserror = 0;
     int exists = 0;
-
     //scan directory to see if name already exists in directory
     for (int i = 0; i < 100; i++)
     {
-	
 	bzero(&dirBuf,SOFTWARE_DISK_BLOCK_SIZE);
 	int ret = read_sd_block(&dirBuf,(unsigned long)i);
 	if (!strcmp(dirBuf.Filename,name))
 	{
-		fserror = 6;
 		exists = 1;
 		break;
-
 	}
-
     }
-
 
     //TODO: check if the file exists
 

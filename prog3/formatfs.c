@@ -6,13 +6,33 @@
 #include "softwaredisk.h"
 
 
+// access mode for open_file() and create_file()
+typedef enum {
+    READ_ONLY, READ_WRITE
+    } FileMode;
+
+// main private file type
+typedef struct FileInternals {
+	int Dir;
+	int FATblock;
+	int FATblockPosition;
+	FileMode mode;
+	int currentPosition;
+	int currentBlock;
+} FileInternals;
+
+// file type used by user code
+typedef FileInternals* File;
+
 typedef struct DirectoryEntry{
 	char Filename[255];
 	int StartBlock;
 	int EndBlock;
 	int Size;
 	int Used;
-	char emptySpace[257-4*sizeof(int)];	
+	int isOpen;
+	//File fileRef;
+	char emptySpace[257-5*sizeof(int)/*-sizeof(File)*/];	
 } DirectoryEntry;
 
 typedef struct FATentry{
@@ -35,6 +55,8 @@ int main(){
 		Directory[i].EndBlock = -1;
 		Directory[i].Size = -1;
 		Directory[i].Used = 0;
+		Directory[i].isOpen = 0;
+		//Directory[i].fileRef = (File)malloc(sizeof(FileInternals));
 		strcpy(Directory[i].emptySpace,"\0");
 		int ret = write_sd_block(&Directory[i],i);
 //		printf("Return value was %d.\n", ret);

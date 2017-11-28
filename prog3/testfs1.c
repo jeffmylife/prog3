@@ -23,10 +23,10 @@ int main(int argc, char *argv[]) {
 */
   // should succeed
   f=create_file("blarg", READ_ONLY);
-  printf("ret sjkfsaj from create_file(\"blarg\", READ_ONLY) = %p\n",
+  printf("ret from create_file(\"blarg\", READ_ONLY) = %p\n",
 	 f);
   fs_print_error();
-  printf("File Current position : %i \n", 1);
+  printf("File Current position : %i \n", f->currentPosition);
 /*
   // should succeed
   close_file(f);

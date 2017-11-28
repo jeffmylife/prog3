@@ -8,27 +8,10 @@
 #ifndef filesystem_h
 #define filesystem_h
 
-typedef struct DirectoryEntry{
-	char Filename[255];
-	int StartBlock;
-	int EndBlock;
-	int Size;
-	int Used;
-	char emptySpace[257-4*sizeof(int)];	
-} DirectoryEntry;
-
-typedef struct FATentry{
-	int Next;
-	int Used;
-} FATentry;
-
-extern DirectoryEntry Directory[100];
-
 // access mode for open_file() and create_file()
 typedef enum {
     READ_ONLY, READ_WRITE
     } FileMode;
-     
 
 // main private file type
 typedef struct FileInternals {
@@ -42,6 +25,26 @@ typedef struct FileInternals {
 
 // file type used by user code
 typedef FileInternals* File;
+
+typedef struct DirectoryEntry{
+	char Filename[255];
+	int StartBlock;
+	int EndBlock;
+	int Size;
+	int Used;
+	int isOpen;
+	//File fileRef;
+	char emptySpace[257-5*sizeof(int)/*-sizeof(File)*/];	
+} DirectoryEntry;
+
+typedef struct FATentry{
+	int Next;
+	int Used;
+} FATentry;
+
+extern DirectoryEntry Directory[100];
+
+     
 
 // error codes set in global 'fserror' by filesystem functions
 typedef enum  {
