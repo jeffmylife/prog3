@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 	 f);
   fs_print_error();
 
-  // should succeed
+/*  // should succeed
   ret=write_file(f, "hello", strlen("hello"));
   printf("ret from write_file(f, \"hello\", strlen(\"hello\") = %d\n",
 	 ret);
@@ -40,6 +40,7 @@ int main(int argc, char *argv[]) {
   close_file(f);
   printf("Executed close_file(f).\n");
   fs_print_error();
+*/
 }
   
   

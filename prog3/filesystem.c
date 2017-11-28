@@ -169,6 +169,10 @@ File create_file(char *name, FileMode mode)
 void close_file(File file)
 {
     //TODO: ???
+    
+    // Scan directory to see if file exists already or not
+    //if(file_exists(name))
+	   
 };
 
 // read at most 'numbytes' of data from 'file' into 'buf', starting at the
